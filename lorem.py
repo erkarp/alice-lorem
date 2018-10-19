@@ -1,4 +1,7 @@
-import sys, re, random
+import sys
+import re
+import random
+import pyperclip
 
 def get_words(filename='default.txt'):
   try:
@@ -28,6 +31,7 @@ def get_lorem(wordcount):
 arguments = sys.argv[1:] if len(sys.argv) > 1 else ['500']
 words = get_words()
 wordcount = 500
+paracount = 0
 
 for argument in arguments:
   try:
@@ -36,6 +40,8 @@ for argument in arguments:
   except:
     words = get_words(argument)
 
-  
+  pyperclip.copy(get_lorem(wordcount))
+  paracount += 1
 
-  print(get_lorem(wordcount) + '\n')
+pluralize = '' if paracount == 1 else 's'
+print('Successfully copied %s paragraph%s.' %(paracount, pluralize))

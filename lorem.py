@@ -1,21 +1,41 @@
 import sys, re, random
 
-file = open('resource.txt', 'r')
-words = file.read()
-file.close()
+def get_words(filename='default.txt'):
+  try:
+    file = open(filename, 'r')
+    words = file.read()
+    file.close()
 
-words = re.sub(r'[^ A-Za-z]', ' ', words)
-words = re.sub(r'\s+', ' ', words)
-words = words.split(' ')
+    words = re.sub(r'[^ A-Za-z]', ' ', words)
+    words = re.sub(r'\s+', ' ', words)
+    words = words.split()
 
-wordcounts = ['500'] if len(sys.argv) == 1 else sys.argv[1:]
-lorem = ''
+    return words
+    
+  except:
+    print('Invalid filename\n')
+    sys.exit()
 
-for wordcount in wordcounts:
-  for i in range(int(wordcount)):
-    word = words[random.randint(0, len(words) - 1)]
+def get_lorem(wordcount):
+  lorem = ''
+  for i in range(wordcount):
+    randmax = len(words) - 1
+    word = words[random.randint(0, randmax)]
     lorem += word.strip() + ' '
+  return lorem 
 
-  print(lorem + '\n')
 
+arguments = sys.argv[1:] if len(sys.argv) > 1 else ['500']
+words = get_words()
+wordcount = 500
 
+for argument in arguments:
+  try:
+    wordcount = int(argument)
+
+  except:
+    words = get_words(argument)
+
+  
+
+  print(get_lorem(wordcount) + '\n')
